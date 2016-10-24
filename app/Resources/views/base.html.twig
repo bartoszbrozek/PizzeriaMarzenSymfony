@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Pizzeria Marzeń{% endblock %}</title>
+        {% block stylesheets %}
+            <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
+            <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        <div class="header">
+            Pizzeria Marzeń... Najdroższa pizza w mieście!
+        </div>
+    {% block body %}{% endblock %}
+    <div class="footer">
+        Pizzeria Marzeń Inc. 2016 (c)Bartosz Brożek
+    </div>
+    {% block javascripts %}
+        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    {% endblock %}
+</body>
+</html>
