@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 //use Symfony\Component\Security\Core\User\User;
 
@@ -28,15 +29,17 @@ class SecurityController extends Controller {
 
         $form->handleRequest($request);
 
-        if ($form->isValid() && $form->isSubbmited()) {
+        if ($form->isValid() && $form->isSubmitted()) {
             $user = $form->getData();
 
             try {
-                $db = new Database();
 
-                $db->connection();
+                $pdo = new Database();
+
+                $db = $pdo->getDb($pdo->connection());
 
                 $query = $db->prepare("SELECT id_user, login, password FROM users WHERE login=? AND password=? ");
+
                 $query->bindValue(1, $user->getUsername());
                 $query->bindValue(2, $user->getPassword());
                 $query->execute();
@@ -46,13 +49,29 @@ class SecurityController extends Controller {
 
             if ($query->rowCount() > 0) {
                 $userData = $query->fetch();
-                $_SESSION['userId'] = $userData['id_user'];
-                $_SESSION['login'] = $userData['login'];
+                $session = new Session();
+                // $session->start();
+                $session->set('id_user', $userData['id_user']);
+                $session->set('login', $userData['login']);
 
                 return $this->redirectToRoute('homepage');
             }
         }
-        return $this->render('default/loginForm.html.twig', ['form' => $form->createView()]);
+        return $this->render('default/loginForm.html.twig', [
+                    'form' => $form->createView()
+                        ]
+        );
+    }
+
+    /**
+     * @Route("logout")
+     */
+    public function logout() {
+        $session = new Session();
+
+        $session->invalidate();
+
+        return $this->render('default/index.html.twig');
     }
 
 }

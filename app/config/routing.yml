@@ -7,3 +7,9 @@ homepage:
     
 login:
     path: /login
+    
+logout:
+    path: /logout
+    
+account:
+    path: /account

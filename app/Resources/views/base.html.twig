@@ -29,7 +29,16 @@
                     <li><a href="#">Kontakt</a></li> 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{{ path ('login') }}"><span class="glyphicon glyphicon-user"></span> Zaloguj się/Zarejestruj się</a></li>
+                    <li>
+                        {% if (login is defined) and (login is not empty) %}
+                        <a href="{{ path ('account') }}"><span class="glyphicon glyphicon-user"></span> Witaj, {{ login }}!</a>
+                        </li><li>
+                        <a href="{{ path ('logout') }}"><span class="glyphicon glyphicon-logout"></span> Wyloguj się</a>
+                        
+                        {% else %}
+                        <a href="{{ path ('login') }}"><span class="glyphicon glyphicon-user"></span> Zaloguj się/Zarejestruj się</a>
+                        {% endif %}
+                    </li>
                 </ul>
             </div>
         </nav>

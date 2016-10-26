@@ -2,7 +2,12 @@
 
 namespace AppBundle\Database;
 
+use PDO;
+use PDOException;
+
 class Database {
+
+    public $db;
 
     public function connection() {
         try {
@@ -14,10 +19,15 @@ class Database {
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             //Zabezpieczamy db przed atakami typu sql injection
             $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+            $this->db = $db;
         } catch (PDOException $ex) {
             echo $ex->getMessage();
             return $errType = 100; // Błąd połączenia z bazą
         }
+    }
+
+    public function getDb($db) {
+        return $this->db;
     }
 
 }
