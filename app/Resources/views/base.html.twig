@@ -5,15 +5,46 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Pizzeria Marzeń{% endblock %}</title>
         {% block stylesheets %}
-            <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
-            <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            {#  <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
+              <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />#}
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        <div class="header">
-            Pizzeria Marzeń... Najdroższa pizza w mieście!
+        {#NAVBAR#}
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{{ path ('homepage') }}">
+                        <img alt="Pizzeria Marzeń!" src="{{asset('images/brand-logo.png')}}">
+                    </a>
+                    <a class="navbar-brand" href="{{ path ('homepage') }}">Pizzeria Marzeń</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Menu</a></li>
+                    <li><a href="#">Administracja</a></li>
+                    <li><a href="#">Kontakt</a></li> 
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{ path ('login') }}"><span class="glyphicon glyphicon-user"></span> Zaloguj się/Zarejestruj się</a></li>
+                </ul>
+            </div>
+        </nav>
+
+
+
+
+
+        {#HEADER#}
+        <div class="jumbotron text-center">
+            <h1>Pizzeria Marzeń...</h1>
+            <p>Najdroższa pizza na świecie!</p>
         </div>
+
+        {#BODY#}
     {% block body %}{% endblock %}
     <div class="footer">
         Pizzeria Marzeń Inc. 2016 (c)Bartosz Brożek
