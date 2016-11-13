@@ -13,3 +13,21 @@ logout:
     
 account:
     path: /account
+    
+admin:
+    path: /admin
+
+products_management:
+    path: /admin/products
+    
+products_add:
+    path: /admin/products/add
+    
+ingredients_management:
+    path: /admin/products/ingredient
+
+ingredients_add:
+    path: /admin/products/ingredient/add
+    
+add_to_cart:
+    path: /add_to_cart

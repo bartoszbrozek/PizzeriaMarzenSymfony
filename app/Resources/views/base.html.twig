@@ -5,47 +5,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Pizzeria Marzeń{% endblock %}</title>
         {% block stylesheets %}
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
+            <link rel="stylesheet" href="{{ asset('css/additional.css') }}" />
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-            {#  <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
-              <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />#}
+
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+
         {#NAVBAR#}
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="{{ path ('homepage') }}">
-                        <img alt="Pizzeria Marzeń!" src="{{asset('images/brand-logo.png')}}">
-                    </a>
-                    <a class="navbar-brand" href="{{ path ('homepage') }}">Pizzeria Marzeń</a>
-                </div>
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Menu</a></li>
-                    <li><a href="#">Administracja</a></li>
-                    <li><a href="#">Kontakt</a></li> 
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        {% if (login is defined) and (login is not empty) %}
-                        <a href="{{ path ('account') }}"><span class="glyphicon glyphicon-user"></span> Witaj, {{ login }}!</a>
-                        </li><li>
-                        <a href="{{ path ('logout') }}"><span class="glyphicon glyphicon-logout"></span> Wyloguj się</a>
-                        
-                        {% else %}
-                        <a href="{{ path ('login') }}"><span class="glyphicon glyphicon-user"></span> Zaloguj się/Zarejestruj się</a>
-                        {% endif %}
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-
-
-
+        {% include 'default/webparts/navbar.html.twig' %}
 
         {#HEADER#}
         <div class="jumbotron text-center">
@@ -54,12 +25,16 @@
         </div>
 
         {#BODY#}
-    {% block body %}{% endblock %}
-    <div class="footer">
-        Pizzeria Marzeń Inc. 2016 (c)Bartosz Brożek
-    </div>
-    {% block javascripts %}
-        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    {% endblock %}
-</body>
+        <div class="container-fluid">
+            {% block body %}
+            {% endblock %}
+        </div>
+        <div class="footer text-center text-bold">
+            Pizzeria Marzeń Inc. 2016 (c)Bartosz Brożek
+        </div>
+
+        {% block javascripts %}
+            <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+        {% endblock %}
+    </body>
 </html>

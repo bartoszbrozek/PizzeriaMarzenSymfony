@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Database\Database;
 use AppBundle\Entity\User;
+use AppBundle\Database\Database;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -12,9 +12,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-//use Symfony\Component\Security\Core\User\User;
-
 class SecurityController extends Controller {
+
+    public $errorInfo;
 
     /**
      * @Route("login")
@@ -33,9 +33,7 @@ class SecurityController extends Controller {
             $user = $form->getData();
 
             try {
-
                 $pdo = new Database();
-
                 $db = $pdo->getDb($pdo->connection());
 
                 $query = $db->prepare("SELECT id_user, login, password FROM users WHERE login=? AND password=? ");
@@ -55,10 +53,13 @@ class SecurityController extends Controller {
                 $session->set('login', $userData['login']);
 
                 return $this->redirectToRoute('homepage');
+            } else {
+                $this->errorInfo = 'Niepoprawny login i/lub hasło.';
             }
         }
         return $this->render('default/loginForm.html.twig', [
-                    'form' => $form->createView()
+                    'form' => $form->createView(),
+                    'errorInfo' => $this->errorInfo
                         ]
         );
     }
@@ -71,7 +72,7 @@ class SecurityController extends Controller {
 
         $session->invalidate();
 
-        return $this->render('default/index.html.twig');
+        return $this->redirectToRoute('homepage');
     }
 
 }

@@ -2,8 +2,24 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-sm-4">.col-sm-4</div>
-        <div class="col-sm-4">.col-sm-8</div>
-        <div class="col-sm-4">.col-sm-8</div>
+        {% for product in products %}
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                <div class="hovereffect">
+                    <img class="img-responsive" src="http://placehold.it/350x250" alt="">
+                    <div class="overlay">
+                        <h2>{{ product.name }}</h2>
+                        <p> 
+                            <a href="#">{{ product.price }} zł</a>
+                        </p> 
+                        <p> 
+                            <a href="{{ path('add_to_cart') }}{{ product.id_product }}">Dodaj do koszyka</a>
+                        </p> 
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
+
+    {{ app.session.get('id_user') }}
+
 {% endblock %}

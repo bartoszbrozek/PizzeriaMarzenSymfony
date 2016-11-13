@@ -15,7 +15,12 @@ class MainController extends Controller {
     public function indexAction(Request $request) {
         $session = new Session();
 
-        return $this->render('default/index.html.twig', ['login' => $session->get('login')]);
+        $products = new ProductController();
+
+        return $this->render('default/index.html.twig', [
+                    'login' => $session->get('login'),
+                    'products' => $products->showProducts()
+        ]);
     }
 
 }
