@@ -29,5 +29,11 @@ ingredients_management:
 ingredients_add:
     path: /admin/products/ingredient/add
     
-add_to_cart:
-    path: /add_to_cart
+cart:
+    path: /cart
+    
+cart_add:
+    path: /cart/add
+    
+cart_flush:
+    path: /cart/flush

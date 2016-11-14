@@ -50,7 +50,7 @@ class Product {
         $this->ingredients = $ingredients;
     }
 
-    function fetchIngredients() {
+    private function fetchProduct($id_product) {
         
     }
 

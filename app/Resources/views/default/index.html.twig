@@ -10,9 +10,9 @@
                         <h2>{{ product.name }}</h2>
                         <p> 
                             <a href="#">{{ product.price }} zł</a>
-                        </p> 
-                        <p> 
-                            <a href="{{ path('add_to_cart') }}{{ product.id_product }}">Dodaj do koszyka</a>
+                        </p>
+                        <p>
+                            <a href="{{ path('cart_add') }}/{{product.id_product}}">Dodaj do koszyka</a>
                         </p> 
                     </div>
                 </div>
@@ -20,6 +20,6 @@
         {% endfor %}
     </div>
 
-    {{ app.session.get('id_user') }}
+    {#    {{ app.session.get('id_user') }}#}
 
 {% endblock %}
