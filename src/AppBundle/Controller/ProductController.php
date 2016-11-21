@@ -8,6 +8,13 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class ProductController extends Product {
 
+    private $session;
+
+    public function __construct() {
+        $this->session = new Session();
+        ;
+    }
+
     public function showProducts() {
         try {
             $pdo = new Database();
@@ -40,8 +47,12 @@ class ProductController extends Product {
     }
 
     public function flushCart() {
-        $session = new Session();
-        $session->remove('cart');
+        $this->session->remove('cart');
+    }
+
+    public function removeElement($id_product) {
+//        $this->session->remove('cart', $id_product);
+        $this->session->remove($id_product);
     }
 
 }

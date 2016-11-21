@@ -20,8 +20,20 @@
         </li>
 
         {% if ((app.session.get('id_user') is not empty)) %}
-            <a class="nav-item nav-link float-xs-right" href="{{ path ('account') }}"><span class="glyphicon glyphicon-user"></span> Witaj, {{ app.session.get('login') }}!</a>
-            <a class="nav-item nav-link float-xs-right" href="{{ path ('logout') }}"><span class="glyphicon glyphicon-logout"></span> Wyloguj się</a>
+            <a class="nav-item nav-link float-xs-right" href="{{ path ('logout') }}"><span class="glyphicon glyphicon-logout"></span>
+                Wyloguj się
+            </a>
+            <a class="nav-item nav-link float-xs-right" href="{{ path ('cart') }}"><span class="glyphicon glyphicon-user"></span>
+                Koszyk 
+                {% if ((app.session.get('cart') is empty)) %}
+                    [Pusty]
+                {% else %}
+                    [{{ app.session.get('cart')|length }}]
+                {% endif %}
+            </a>
+            <a class="nav-item nav-link float-xs-right" href="{{ path ('account') }}"><span class="glyphicon glyphicon-user"></span>
+                Witaj, {{ app.session.get('login') }}!
+            </a>
         {% else %}
             <a class="nav-item nav-link float-xs-right" href="{{ path ('login') }}"><span class="glyphicon glyphicon-user"></span> Zaloguj się/Zarejestruj się</a>
         {% endif %}

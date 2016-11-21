@@ -9,9 +9,16 @@
                     <div class="content">
                         {{ errorInfo }}
                         {{ app.session.get('id_product') }}
-
-                        {% for cart_product in cart %}
-                            {{ cart_product }}
+                        {% for key, cart_product in cart %}
+                            <div class="row">
+                                <div class="row">
+                                    {{ cart_product[0].name|e }}
+                                </div>
+                                <div class="row">
+                                    {{ cart_product[0].description|e }}
+                                </div>
+                                <a class="btn btn-primary width-100" href="{{ path('cart_product_remove') }}/{{ key }}" role="button">Usuń pizzę</a>
+                            </div>
                         {% endfor %}
                     </div>
                 </div>

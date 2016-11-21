@@ -37,3 +37,6 @@ cart_add:
     
 cart_flush:
     path: /cart/flush
+
+cart_product_remove:
+    path: /cart/remove

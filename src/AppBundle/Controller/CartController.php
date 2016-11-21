@@ -49,7 +49,7 @@ class CartController extends Controller {
 
         $cart = $this->session->get('cart');
 
-        $cart[] = $id_product;
+        $cart[] = $product;
         $this->session->set('cart', $cart);
 
 
@@ -62,6 +62,7 @@ class CartController extends Controller {
         }
 
         // Everything is ok, redirect to showCartAction
+        $this->errorInfo = 'Pizza została dodana.';
         return $this->redirectToRoute('cart');
     }
 
@@ -71,7 +72,6 @@ class CartController extends Controller {
     public function showCartAction(Request $request) {
         // show cart
 
-        $this->errorInfo = 'Pizza została dodana.';
         return $this->render('default/cart/cart.html.twig', [
                     'errorInfo' => $this->errorInfo,
                     'cart' => $this->session->get('cart')
@@ -83,11 +83,30 @@ class CartController extends Controller {
      * @Route("cart/flush/")
      */
     public function flushCartAction(Request $request) {
-        // show cart
-
         $this->products->flushCart();
 
         $this->errorInfo = 'Twój koszyk jest pusty.';
+        return $this->render('default/cart/cart.html.twig', [
+                    'errorInfo' => $this->errorInfo,
+                    'cart' => $this->session->get('cart')
+                        ]
+        );
+    }
+
+    /**
+     * @Route("cart/remove/{id_product}")
+     */
+    public function removeFromCartAction(Request $request, $id_product) {
+
+        $product_position = $this->session->get('cart');
+
+        unset($product_position[$id_product]);
+
+        var_dump($product_position);
+
+        $this->session->set('cart', $product_position);
+
+        $this->errorInfo = 'Poprawnie usunięto element.';
         return $this->render('default/cart/cart.html.twig', [
                     'errorInfo' => $this->errorInfo,
                     'cart' => $this->session->get('cart')
