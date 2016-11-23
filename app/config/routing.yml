@@ -23,6 +23,9 @@ products_management:
 products_add:
     path: /admin/products/add
     
+products_edit:
+    path: /admin/products/edit
+    
 ingredients_management:
     path: /admin/products/ingredient
 

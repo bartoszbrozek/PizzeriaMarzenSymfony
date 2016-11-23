@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ProductMgmtController extends Controller {
 
@@ -49,6 +50,8 @@ class ProductMgmtController extends Controller {
 
         // Create new form for creating new products
         $product = new Product();
+        $ingredient = new ProductController();
+        $ingredients = $ingredient->fetchIngredients();
 
         $form = $this->createFormBuilder($product)
                 ->add('name', TextType::class, array(
@@ -60,6 +63,11 @@ class ProductMgmtController extends Controller {
                 ->add('price', NumberType::class, array(
                     'label' => 'Cena',
                 ))
+                ->add('ingredients', ChoiceType::class, array(
+                    'label' => 'Składniki',
+                    'multiple' => true,
+                    'expanded' => true,
+                    'choices' => $ingredients))
                 ->add('submit', SubmitType::class, ['label' => 'Dodaj'])
                 ->getForm();
 
@@ -69,6 +77,9 @@ class ProductMgmtController extends Controller {
         // then insert new product
         if ($form->isValid() && $form->isSubmitted()) {
             try {
+                $db->beginTransaction();
+
+                //Insert product
                 $query = $db->prepare('INSERT INTO products (name, price, description) VALUES (?,?,?)');
 
                 $query->bindValue(1, $product->getName());
@@ -78,8 +89,20 @@ class ProductMgmtController extends Controller {
                 $query->execute();
                 $lastId = $db->lastInsertId();
 
+                //Insert product's ingredients
+                foreach ($product->getIngredients() as $ingredient) {
+                    $query = $db->prepare('INSERT INTO product_ingredient (id_product, id_ingredient) VALUES (?,?)');
+                    $query->bindValue(1, $lastId);
+                    $query->bindValue(2, $ingredient);
+
+                    $query->execute();
+                }
+
+                $db->commit();
+
                 $this->errorInfo = 'Poprawnie dodano nową pizzę.';
             } catch (PDOException $ex) {
+                $db->rollBack();
                 echo $ex->getMessage();
             }
         }
@@ -89,6 +112,61 @@ class ProductMgmtController extends Controller {
                     'errorInfo' => $this->errorInfo
                         ]
         );
+    }
+
+    /**
+     * @Route("admin/products/edit")
+     */
+    public function showProductsToEditAction(Request $request) {
+
+        $products = new ProductController();
+
+        return $this->render('default/admin/products/product_show.html.twig', [
+                    'errorInfo' => $this->errorInfo,
+                    'products' => $products->showProducts()
+        ]);
+    }
+
+    /**
+     * @Route("admin/products/edit/{id_product}")
+     */
+    public function editProductAction(Request $request, $id_product) {
+
+        // Create new form for updating products
+        $product = new Product();
+        $productInfo = new ProductController();
+        $ingredients = $productInfo->fetchProductIngredients($id_product);
+        $productContent = $productInfo->fetchProduct($id_product);
+
+        $form = $this->createFormBuilder($product)
+                ->add('name', TextType::class, array(
+                    'label' => 'Nazwa',
+                    'data' => $productContent[0]['name']
+                ))
+                ->add('description', TextType::class, array(
+                    'label' => 'Opis',
+                    'data' => $productContent[0]['description']
+                ))
+                ->add('price', NumberType::class, array(
+                    'label' => 'Cena',
+                    'data' => $productContent[0]['price']
+                ))
+                ->add('ingredients', ChoiceType::class, array(
+                    'label' => 'Składniki',
+                    'multiple' => true,
+                    'expanded' => true,
+                    'choices' => $ingredients,
+                    //'data' => $productContent[0]['ingredients']
+                ))
+                ->add('submit', SubmitType::class, ['label' => 'Dodaj'])
+                ->getForm();
+
+        $form->handleRequest($request);
+
+        return $this->render('default/admin/products/product_edit.html.twig', [
+                    'errorInfo' => $this->errorInfo,
+                    'form' => $form->createView()
+        ]);
     }
 
     // INGREDIENTS
