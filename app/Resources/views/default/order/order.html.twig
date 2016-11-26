@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{#    {{ dump(app.session.all) }}#}
+    <div class="container">
+        <div class="row row-centered">
+            <div class="col-sm-4 col-centered"></div>
+            <div class="col-sm-4 col-centered">
+                <div class="item">
+                    <div class="content">
+                        <h3>Zawartość zamówienia</h3>
+                        {% for key, cart_product in cart %}
+                            <div class="row">
+                                <div class="row">
+                                    {{ cart_product[0].name|e }}
+                                </div>
+                                <div class="row">
+                                    {{ cart_product[0].description|e }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <a class="btn btn-secondary width-100" href="{{ path('cart') }}" role="button">Zmień zawartość koszyka</a>
+                        <h3>Dane do zamówienia</h3>
+                        <div class="row row-centered">
+                            {#                            <div class="col-sm-4 col-centered"></div>#}
+                            {#                            <div class="col-sm-4 col-centered">#}
+                            <div class="item">
+                                <div class="content">
+                                    {{ errorInfo }}
+                                    {{ form_start(form) }}
+                                    {{ form_widget(form) }}
+                                    {{ form_end(form) }}
+                                </div>
+                            </div>
+                            {#                            </div>#}
+                            {#                            <div class="col-sm-4 col-centered"></div>#}
+                        </div>
+                        {{ app.session.get('id_product') }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-centered"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                {#                <a class="btn btn-success width-100" href="{{ path('order_finalize') }}" role="button">Finalizuj zamówienie</a>#}
+
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+
+
+    </div>
+{% endblock %}

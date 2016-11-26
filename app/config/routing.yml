@@ -43,3 +43,9 @@ cart_flush:
 
 cart_product_remove:
     path: /cart/remove
+    
+order:
+    path: /order
+    
+order_finalize:
+    path: /order/finalize

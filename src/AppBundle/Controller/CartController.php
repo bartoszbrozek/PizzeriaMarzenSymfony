@@ -2,13 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Cart;
+//use AppBundle\Entity\Cart;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+//use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+//use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class CartController extends Controller {
 
