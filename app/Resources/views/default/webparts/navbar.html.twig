@@ -23,6 +23,7 @@
             <a class="nav-item nav-link float-xs-right" href="{{ path ('logout') }}"><span class="glyphicon glyphicon-logout"></span>
                 Wyloguj się
             </a>
+                
             <a class="nav-item nav-link float-xs-right" href="{{ path ('cart') }}"><span class="glyphicon glyphicon-user"></span>
                 Koszyk 
                 {% if ((app.session.get('cart') is empty)) %}
@@ -31,6 +32,16 @@
                     [{{ app.session.get('cart')|length }}]
                 {% endif %}
             </a>
+            
+            <a class="nav-item nav-link float-xs-right" href="{{ path ('orders') }}"><span class="glyphicon glyphicon-user"></span>
+                Zamówienia 
+                {% if ((app.session.get('orders') is empty)) %}
+                    [Brak]
+                {% else %}
+                    [{{ app.session.get('orders')|length }}]
+                {% endif %}
+            </a>
+            
             <a class="nav-item nav-link float-xs-right" href="{{ path ('account') }}"><span class="glyphicon glyphicon-user"></span>
                 Witaj, {{ app.session.get('login') }}!
             </a>

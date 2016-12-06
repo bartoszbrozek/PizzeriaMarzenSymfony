@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+
+        <table class="table table-inverse table-hover" style="cursor: pointer;">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Użytkownik</th>
+                    <th>Produkty</th>
+                    <th>Cena</th>
+                    <th>Data zamówienia</th>
+                    <th>Czas dostarczenia</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr onclick="window.document.location = '{{ path('orders') }}/{{ order.id_order }}';">
+                        <th scope="row">{{ order.id_order }}</th>
+                        <td>{{ order.user_name }}</td>
+                        <td>
+                            {% set fullPrice = 0 %}
+                            {% for details in order['details'] %}
+                                {% set fullPrice = fullPrice + details['price'] %}
+                                <div class="row">
+                                    {{ details['name'] }}
+                                </div>
+                            {% endfor %}
+                        </td>
+                        <td>{{ fullPrice }}</td>
+                        <td>{{ order.date }}</td>
+                        <td>{{ order.date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+    {{ dump(orders) }}
+
+{% endblock %}
+

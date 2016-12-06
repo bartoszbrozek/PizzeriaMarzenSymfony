@@ -92,8 +92,54 @@ class ProductController extends Product {
     }
 
     public function removeElement($id_product) {
-//        $this->session->remove('cart', $id_product);
         $this->session->remove($id_product);
+    }
+
+    public function getOrderDetails($orderID) {
+        try {
+            $pdo = new Database();
+            $db = $pdo->getDb($pdo->connection());
+
+            $query = $db->prepare("SELECT op.id_product, op.price, p.name "
+                    . "FROM orders o "
+                    . "LEFT JOIN order_product op ON op.id_order = o.id_order "
+                    . "LEFT JOIN products p ON p.id_product = op.id_product "
+                    . "WHERE o.id_order=?");
+            $query->bindValue(1, $orderID);
+            $query->execute();
+            return $query->fetchAll();
+        } catch (PDOException $ex) {
+            echo $ex->getMessage();
+        }
+    }
+
+    public function showOrders() {
+        try {
+            $pdo = new Database();
+            $db = $pdo->getDb($pdo->connection());
+
+            $query = $db->prepare("SELECT o.id_order, o.id_user, o.id_status, o.date, s.name AS status_name, s.color, u.login AS user_name "
+                    . "FROM orders o "
+                    . "LEFT JOIN status s ON s.id_status = o.id_status "
+                    . "LEFT JOIN users u ON u.id_user = o.id_user");
+            $query->execute();
+
+            $orders = $query->fetchAll();
+            
+            $orderDetails = new ProductController();
+            $i=0;
+            foreach ($orders as $order) {
+                $orders[$i++]['details'] = $orderDetails->getOrderDetails($order['id_order']);
+                echo $order['id_order'];
+                
+            }
+
+            // return fetched orders
+            // return $query->fetchAll();
+            return $orders;
+        } catch (PDOException $ex) {
+            echo $ex->getMessage();
+        }
     }
 
 }

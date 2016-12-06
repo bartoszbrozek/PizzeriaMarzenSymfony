@@ -49,3 +49,6 @@ order:
     
 order_finalize:
     path: /order/finalize
+    
+orders:
+    path: /admin/orders

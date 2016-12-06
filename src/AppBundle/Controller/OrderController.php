@@ -182,4 +182,19 @@ class OrderController extends Controller {
         return $this->render('default/order/order_status.html.twig');
     }
 
+    /**
+     * @Route("/admin/orders")
+     */
+    public function showOrdersAction(Request $request) {
+
+        $orders = new ProductController();
+        $ordersContainer = $orders->showOrders();
+
+        return $this->render('default/admin/orders/orders.html.twig', [
+                    'orders' => $ordersContainer,
+                    'errorInfo' => $this->errorInfo
+                        ]
+        );
+    }
+
 }
