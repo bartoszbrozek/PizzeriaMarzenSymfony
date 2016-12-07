@@ -197,4 +197,27 @@ class OrderController extends Controller {
         );
     }
 
+    /**
+     * @Route("/admin/orders/{id_order}")
+     */
+    public function showOrderDetailsAction(Request $request, $id_order) {
+
+        $orders = new ProductController();
+        $orderDetails = $orders->getFullOrderDetails($id_order);
+
+        $user = new UserController();
+        $userDetails = $user->fetchUserData($orderDetails[0]['id_user']);
+
+        if (empty($orderDetails)) {
+            $this->errorInfo = "Nie ma takiego zamówienia.";
+        }
+
+        return $this->render('default/admin/orders/orderDetails.html.twig', [
+                    'orderDetails' => $orderDetails,
+                    'userDetails' => $userDetails,
+                    'errorInfo' => $this->errorInfo
+                        ]
+        );
+    }
+
 }

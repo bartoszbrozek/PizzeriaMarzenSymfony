@@ -12,13 +12,14 @@
                     <th>Cena</th>
                     <th>Data zamówienia</th>
                     <th>Czas dostarczenia</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
                 {% for order in orders %}
                     <tr onclick="window.document.location = '{{ path('orders') }}/{{ order.id_order }}';">
                         <th scope="row">{{ order.id_order }}</th>
-                        <td>{{ order.user_name }}</td>
+                        <td>{{ order.name }} {{ order.lastname }}</td>
                         <td>
                             {% set fullPrice = 0 %}
                             {% for details in order['details'] %}
@@ -31,6 +32,7 @@
                         <td>{{ fullPrice }}</td>
                         <td>{{ order.date }}</td>
                         <td>{{ order.date }}</td>
+                        <td>{{ order.id_status }}. {{ order.status_name }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

@@ -118,25 +118,55 @@ class ProductController extends Product {
             $pdo = new Database();
             $db = $pdo->getDb($pdo->connection());
 
-            $query = $db->prepare("SELECT o.id_order, o.id_user, o.id_status, o.date, s.name AS status_name, s.color, u.login AS user_name "
+            $query = $db->prepare("SELECT o.id_order, o.id_user, o.id_status, s.name as status_name, o.date, s.name AS status_name, s.color, u.login AS user_name, "
+                    . "ud.name, ud.lastname "
                     . "FROM orders o "
                     . "LEFT JOIN status s ON s.id_status = o.id_status "
-                    . "LEFT JOIN users u ON u.id_user = o.id_user");
+                    . "LEFT JOIN users u ON u.id_user = o.id_user "
+                    . "LEFT JOIN user_details ud ON ud.id_user = u.id_user");
             $query->execute();
 
             $orders = $query->fetchAll();
-            
+
             $orderDetails = new ProductController();
-            $i=0;
+            $i = 0;
             foreach ($orders as $order) {
                 $orders[$i++]['details'] = $orderDetails->getOrderDetails($order['id_order']);
-                echo $order['id_order'];
-                
+//                echo $order['id_order'];
             }
 
             // return fetched orders
             // return $query->fetchAll();
             return $orders;
+        } catch (PDOException $ex) {
+            echo $ex->getMessage();
+        }
+    }
+
+    public function getFullOrderDetails($orderID) {
+        try {
+            $pdo = new Database();
+            $db = $pdo->getDb($pdo->connection());
+
+            $query = $db->prepare("SELECT o.id_order, o.id_user, o.id_status, s.name as status_name, o.date, s.name AS status_name, s.color "
+                    . "FROM orders o "
+                    . "LEFT JOIN status s ON s.id_status = o.id_status "
+                    . "WHERE o.id_order=?");
+            $query->bindValue(1, $orderID);
+            $query->execute();
+            $orderDetails = $query->fetchAll();
+
+            $query = $db->prepare("SELECT op.id_product, op.id_order, p.name "
+                    . "FROM order_product op "
+                    . "LEFT JOIN products p ON op.id_product = p.id_product "
+                    . "WHERE op.id_order=?");
+
+            $query->bindValue(1, $orderDetails[0]['id_order']);
+            $query->execute();
+
+            $orderDetails['order_details'] = $query->fetchAll();
+
+            return $orderDetails;
         } catch (PDOException $ex) {
             echo $ex->getMessage();
         }
