@@ -10,15 +10,27 @@
                 <h3 class="card-title">Zamówienie nr: {{ orderDetails[0]['id_order'] }}</h3>
                 <p class="card-text">Status: {{ orderDetails[0]['status_name'] }}</p>
                 <p class="card-text">Data: {{ orderDetails[0]['date']}}</p>
-                <a href="#" class="btn btn-warning">Poprzedni status</a>
-                <a href="#" class="btn btn-primary">Następny status</a>
+                <a href="{{ path('orders') }}/{{ orderDetails[0]['id_order'] }}/prev" class="btn btn-warning">Poprzedni status</a>
+                <a href="{{ path('orders') }}/{{ orderDetails[0]['id_order'] }}/next" class="btn btn-primary">Następny status</a>
             </div>
         </div> 
+
+        <div class="card card-inverse" style="background-color: #333; border-color: #333;">
+            <div class="card-block">
+                <h3 class="card-title"> {{ userDetails['name'] }} {{ userDetails['lastName'] }}</h3>
+                <p class="card-text">Numer telefonu: {{ userDetails['phoneNumber'] }}</p>
+                <p class="card-text"> {{ userDetails['postalCode']}} {{ userDetails['city']}}</p>
+                <p class="card-text">{{ userDetails['street']}} {{ userDetails['flatNumber']}} / {{ userDetails['houseNumber']}}</p>
+            </div>
+        </div> 
+
 
     </div>
 
     {{ dump(orderDetails) }}
     {{ dump(userDetails) }}
+
+    {{ dump(errorInfo) }}
 
 {% endblock %}
 

@@ -172,4 +172,51 @@ class ProductController extends Product {
         }
     }
 
+    public function getOrderStatus($id_order) {
+        try {
+            $pdo = new Database();
+            $db = $pdo->getDb($pdo->connection());
+
+            $query = $db->prepare("SELECT id_status FROM orders WHERE id_order=?");
+            $query->bindValue(1, $id_order);
+            $query->execute();
+
+            $id_status = $query->fetch();
+
+            return $id_status['id_status'];
+        } catch (PDOException $ex) {
+            echo $ex->getMessage();
+        }
+    }
+
+    public function nextStatus($orderID, $statusID) {
+        try {
+            $pdo = new Database();
+            $db = $pdo->getDb($pdo->connection());
+
+            $nextStatus = $statusID + 1;
+            $query = $db->prepare("UPDATE orders SET id_status=? WHERE id_order=?");
+            $query->bindValue(1, $nextStatus);
+            $query->bindValue(2, $orderID);
+            $query->execute();
+        } catch (PDOException $ex) {
+            echo $ex->getMessage();
+        }
+    }
+
+    public function prevStatus($orderID, $statusID) {
+        try {
+            $pdo = new Database();
+            $db = $pdo->getDb($pdo->connection());
+
+            $nextStatus = $statusID - 1;
+            $query = $db->prepare("UPDATE orders SET id_status=? WHERE id_order=?");
+            $query->bindValue(1, $nextStatus);
+            $query->bindValue(2, $orderID);
+            $query->execute();
+        } catch (PDOException $ex) {
+            echo $ex->getMessage();
+        }
+    }
+
 }

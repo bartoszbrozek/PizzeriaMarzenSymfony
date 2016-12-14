@@ -220,4 +220,64 @@ class OrderController extends Controller {
         );
     }
 
+    /**
+     * @Route("/admin/orders/{id_order}/next")
+     */
+    public function nextStatusAction(Request $request, $id_order) {
+
+        $orders = new ProductController();
+        $status = $orders->getOrderStatus($id_order);
+
+        $this->errorInfo = $status;
+
+        if (empty($status)) {
+            $this->errorInfo = "Nie ma takiego zamówienia.";
+        }
+
+        if ($status < 6) {
+            $orders->nextStatus($id_order, $status);
+        }
+
+        $orderDetails = $orders->getFullOrderDetails($id_order);
+        $user = new UserController();
+        $userDetails = $user->fetchUserData($orderDetails[0]['id_user']);
+
+        return $this->render('default/admin/orders/orderDetails.html.twig', [
+                    'orderDetails' => $orderDetails,
+                    'userDetails' => $userDetails,
+                    'errorInfo' => $this->errorInfo
+                        ]
+        );
+    }
+
+    /**
+     * @Route("/admin/orders/{id_order}/prev")
+     */
+    public function prevStatusAction(Request $request, $id_order) {
+
+        $orders = new ProductController();
+        $status = $orders->getOrderStatus($id_order);
+
+        $this->errorInfo = $status;
+
+        if (empty($status)) {
+            $this->errorInfo = "Nie ma takiego zamówienia.";
+        }
+
+        if ($status > 1) {
+            $orders->prevStatus($id_order, $status);
+        }
+
+        $orderDetails = $orders->getFullOrderDetails($id_order);
+        $user = new UserController();
+        $userDetails = $user->fetchUserData($orderDetails[0]['id_user']);
+
+        return $this->render('default/admin/orders/orderDetails.html.twig', [
+                    'orderDetails' => $orderDetails,
+                    'userDetails' => $userDetails,
+                    'errorInfo' => $this->errorInfo
+                        ]
+        );
+    }
+
 }

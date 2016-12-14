@@ -52,3 +52,6 @@ order_finalize:
     
 orders:
     path: /admin/orders
+
+order_next_status:
+    path: /admin/orders/{id_order}/next
